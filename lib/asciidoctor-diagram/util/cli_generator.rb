@@ -42,6 +42,37 @@ module Asciidoctor
         end
       end
 
+      def generate_file_pp(tool, input_ext, output_ext, code)
+        tool_name = File.basename(tool)
+
+        source_file = Tempfile.new([tool_name, ".#{input_ext}"])
+        begin
+          #print("CODE: ", code, "\n")
+          code.each_line do |line|
+            include_filename,= line.match(/\s*#include\s*\"([^"]*)\"\s*/).captures
+            if (include_filename)
+              #print("include_filename: ", include_filename, "\n")
+              File.write(source_file.path, File.read(include_filename))
+            else
+              File.write(source_file.path, line)
+            end
+          end
+
+          target_file = Tempfile.new([tool_name, ".#{output_ext}"])
+          begin
+            target_file.close
+
+            opts = yield tool, source_file.path, target_file.path
+
+            generate(opts, target_file)
+          ensure
+            target_file.unlink
+          end
+        ensure
+          source_file.unlink
+        end
+      end
+
       def generate(opts, target_file, open3_opts = {})
         case opts
           when Array
