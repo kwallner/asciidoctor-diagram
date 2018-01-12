@@ -65,7 +65,6 @@ module Asciidoctor
         parse_response(svr.io)
       end
 
-      private
       def self.find_java
         case ::Asciidoctor::Diagram::Platform.os
           when :windows
@@ -77,6 +76,7 @@ module Asciidoctor
         end
       end
 
+      private
       def self.path_to(java_home, java_binary)
         exe_path = File.expand_path(java_binary, java_home)
         if File.executable?(exe_path)
