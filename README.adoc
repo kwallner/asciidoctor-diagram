@@ -69,6 +69,16 @@ ifeval::["{toc-placement}" == "macro"]
 toc::[title={blank}]
 endif::[]
 
+== Development
+
+Create the gem file 
+
+ $ gem build asciidoctor-diagram.gemspec
+
+Installing development gem
+ 
+ $ gem install --local asciidoctor-diagram-<VERSION>.gem
+ 
 == Installation
 
 Asciidoctor Diagram is a RubyGem, which can be installed using the `gem` or `bundle` commands.
